@@ -1,1 +1,4 @@
-.register {}
+.register {
+  font-family: Inter, sans-serif;
+  color: #fff;
+}

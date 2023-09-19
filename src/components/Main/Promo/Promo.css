@@ -7,7 +7,7 @@
   color: #fff;
   font-family: Inter, sans-serif;
   transition: all .3s ease-in-out;
-  background: #073042 50% 80px / 320px no-repeat url("../../../images/promo.png");
+  background: #073042 50% 80px / 320px no-repeat url("../../../images/promo.svg");
 }
 
 .promo__title {
@@ -24,14 +24,14 @@
 
 @media screen and (max-width: 768px) {
   .promo {
-    background: #073042 50% 225px / 320px no-repeat url("../../../images/promo.png");
+    background: #073042 50% 225px / 320px no-repeat url("../../../images/promo.svg");
     padding: 325px 0 344px 0;
   }
 }
 
 @media screen and (max-width: 550px) {
   .promo {
-      background: #073042 50% 142px / 248px no-repeat url("../../../images/promo.png");
+      background: #073042 50% 142px / 248px no-repeat url("../../../images/promo.svg");
       padding: 207px 0 246px 0;
     }
   

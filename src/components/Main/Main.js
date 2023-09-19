@@ -7,14 +7,14 @@ import AboutProject from "./AboutProject/AboutProject";
 
 function Main() {
   return (
-    <main className="content">
+    <>
       <Promo />
       <NavTab />
       <AboutProject />
       <Techs />
       <AboutMe />
       <Portfolio />
-    </main>
+    </>
   );
 }
 

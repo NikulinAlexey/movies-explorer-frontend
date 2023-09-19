@@ -29,6 +29,7 @@
   border-radius: 40px;
   background: #2F2F2F;
   outline: none;
+  border: 1px solid transparent;
   color: #8B8B8B;
   font-family: Inter;
   font-size: 13px;
@@ -36,8 +37,12 @@
   line-height: 17px;
 }
 
+.search-form__input:focus {
+  border: 1px solid #fff;  
+}
+
 .search-form__button {
-  background-image: url(../../../images/search-icon.png);
+  background-image: url(../../../images/search-icon.svg);
   background-position: center;
   background-repeat: no-repeat;
   border: none;
@@ -69,8 +74,6 @@
 
 .search-form__checkbox-input {
   border: 0;
-  width: 36px;
-  height: 20px;
   position: absolute;
   width: 1px;
   height: 1px;
@@ -79,22 +82,28 @@
 }
 
 .search-form__pseudo-item {
-  background-image: url(../../../images/smalltumb-inactive.png);
+  background-image: url(../../../images/smalltumb-inactive.svg);
   background-position: center;
   background-repeat: no-repeat;
   display: inline-block;
   vertical-align: middle;
   width: 36px;
   height: 20px;
-  border: none;
   transition: background-image .2s ease-in;
   margin-right: 12px;
 }
 
-.search-form__checkbox-input:checked+.search-form__pseudo-item {
-  background-image: url(../../../images/smalltumb-active.png);
+.search-form__pseudo-item:hover {
+  background-image: url(../../../images/smalltumb-inactive-hover.svg);
 }
 
+.search-form__checkbox-input:checked+.search-form__pseudo-item {
+  background-image: url(../../../images/smalltumb-active.svg);
+}
+
+.search-form__checkbox-input:checked+.search-form__pseudo-item:hover {
+  background-image: url(../../../images/smalltumb-active-hover.svg);
+}
 .search-form__filter-text {
   color: #FFF;
   font-family: Inter;

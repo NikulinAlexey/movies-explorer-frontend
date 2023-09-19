@@ -80,25 +80,23 @@ function MoviesCardList({
       duraion: '3час 53мин',
     }
   ],
-  isSpinnerVisible,
+  isPreloaderVisible,
 }) {
   return (
     <section className="movies-list">
       <div className="movies-list__container">
-        <div className="movies-list__items">
-          <Preloader isSpinnerVisible={isSpinnerVisible} />
-
+        <Preloader isPreloaderVisible={isPreloaderVisible} />
+        <ul className="movies-list__items">
           {movies.map((movie, i) => (
-            <MoviesCard
-              movie={movie}
-              key={i}
-            // onCardLike={onCardLike}
-            // onCardClick={onCardClick}
-            // handleDelete={onCardDeleteClick}
-            // setIsDeletePopupOpen={setIsDeletePopupOpen}
-            />
+            <li key={i} className="movies-list__item">
+              <MoviesCard
+                movie={movie}
+              // onCardLike={onCardLike}
+              // handleDelete={onCardDeleteClick}
+              />
+            </li>
           ))}
-        </div>
+        </ul>
         <button className="movies-list__button">Ещё</button>
       </div>
     </section>

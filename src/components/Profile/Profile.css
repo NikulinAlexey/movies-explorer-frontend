@@ -31,14 +31,14 @@
   font-weight: 500;
   line-height: normal;
   box-sizing: border-box;
-  padding-bottom: 16px;
+  padding-bottom: 13px;
   border-bottom: 1px solid #424242;
 }
 
 .profile__label:last-of-type {
   padding-bottom: 0;
   border-bottom: none;
-  margin-bottom: 220px;
+  margin-bottom: 215px;
   margin-top: 17px;
 }
 
@@ -51,9 +51,14 @@
   line-height: normal;
   background-color: #202020;
   outline: none;
-  border: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
   max-width: 65%;
   width: 65%;
+}
+
+.profile__input:focus {
+  border: 1px solid white;
 }
 
 .profile__input:hover {
@@ -99,8 +104,12 @@
     margin-bottom: 96px;
   }
 
+  .profile__label {
+    padding-bottom: 12px;
+  }
+
   .profile__label:last-of-type {
-    margin-bottom: 210px;
+    margin-bottom: 206px;
   }
 }
 
@@ -130,6 +139,6 @@
   }
 
   .profile__label:last-of-type {
-    margin-bottom: 379px;
+    margin-bottom: 375px;
   }
 }

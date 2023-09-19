@@ -1,7 +1,9 @@
 .auth-form {
+  font-family: Inter, sans-serif;
+  color: #fff;
   display: flex;
   flex-direction: column;
-  padding: 70px 0 0 0;
+  padding: 69px 0 0 0;
   width: 100%;
 }
 
@@ -15,17 +17,24 @@
 .auth-form__logo {
   width: 38px;
   height: 38px;
-  background-image: url(../../images/logo.png);
+  background-image: url(../../images/logo.svg);
   background-position: center;
   background-repeat: no-repeat;
-  margin-bottom: 40px;
+  margin: 0 0 39px 0;
   opacity: 1;
+  outline: none;
+  border: 1px solid transparent;
   transition: opacity .3s ease-in-out;
 }
 
 .auth-form__logo:hover {
   opacity: .8;
   cursor: pointer;
+}
+
+.auth-form__logo:focus {
+  border-color: #fff;
+  border-radius: 20%;
 }
 
 .auth-form__error-text {
@@ -64,7 +73,7 @@
   border-radius: 8px;
   background: #2F2F2F;
   outline: none;
-  border: none;
+  border: 1px solid transparent;
   height: 46px;
   padding: 15px;
   margin-top: 10px;
@@ -81,7 +90,7 @@
 }
 
 .auth-form__input:focus {
-  outline: none;
+  border-color: #fff;
 }
 
 .auth-form__submit {
@@ -96,9 +105,13 @@
   line-height: normal;
   opacity: 1;
   transition: opacity .3s ease-in-out;
-  border: none;
+  border: 1px solid transparent;
+  outline: none;
   box-sizing: border-box;
   margin-top: auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .auth-form__submit:hover {
@@ -107,7 +120,7 @@
 }
 
 .auth-form__submit:focus {
-  outline: 1.5px solid #000;
+  border-color: #fff;
 }
 
 .auth-form__paragraph {
@@ -124,7 +137,13 @@
   margin-left: 6px;
   text-decoration: none;
   opacity: 1;
+  outline: none;
+  border: 1px solid transparent;
   transition: opacity .3s ease-in-out;
+}
+.auth-form__link:focus {
+  border-color: #fff;
+  border-radius: 3px;
 }
 
 .auth-form__link:hover {

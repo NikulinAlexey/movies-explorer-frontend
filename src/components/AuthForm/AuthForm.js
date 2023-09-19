@@ -23,7 +23,7 @@ function AuthForm({
     <section className="auth-form">
       <div className='auth-form__container'>
         <Link className="auth-form__logo" to='/' />
-        <h2 className="auth-form__title">{title}</h2>
+        <h1 className="auth-form__title">{title}</h1>
 
         <form className='auth-form__form' onSubmit={handleSubmit}>
 
@@ -35,8 +35,10 @@ function AuthForm({
                 name='name'
                 type='name'
                 minLength='3'
+                maxLength='20'
                 value={values.name}
                 onChange={handleChange}
+                placeholder='Введите ваше имя'
                 className={`auth-form__input ${errors.name ? 'auth-form__input_type_error' : ''}`}
               />
             </label>
@@ -47,9 +49,11 @@ function AuthForm({
               id='email'
               name='email'
               type='email'
+              minLength='6'
               maxLength='50'
               value={values.email}
               onChange={handleChange}
+              placeholder='Введите ваш email'
               className={`auth-form__input ${errors.email ? 'auth-form__input_type_error' : ''}`}
             />
           </label>
@@ -62,6 +66,7 @@ function AuthForm({
               type='password'
               onChange={handleChange}
               value={values.password}
+              placeholder='Введите ваш пароль'
               className={`auth-form__input ${errors.password ? 'auth-form__input_type_error' : ''}`}
             />
           </label>
@@ -69,7 +74,7 @@ function AuthForm({
           <span id="name-input-error" className="auth-form__error">
             {errorText}
           </span>
-          <button className='auth-form__submit'>
+          <button type='submit' className='auth-form__submit'>
             {submitText}
           </button>
         </form>

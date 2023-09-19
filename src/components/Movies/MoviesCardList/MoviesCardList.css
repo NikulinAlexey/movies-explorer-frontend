@@ -1,4 +1,6 @@
 .movies-list {
+  font-family: Inter, sans-serif;
+  color: #fff;
   padding-top: 70px;
   display: flex;
   width: 100%;
@@ -7,13 +9,14 @@
 .movies-list__container {
   width: 1140px;
   margin: 0 auto;
-  
+  position: relative;
 }
 
 .movies-list__items {
   width: 100%;
   box-sizing: border-box;
   display: grid;
+  list-style-type: none;
   column-gap: 24px;
   row-gap: 37px;
   grid-template-columns: repeat(3, minmax(25%, 364px));

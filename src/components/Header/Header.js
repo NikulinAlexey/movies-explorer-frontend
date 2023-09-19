@@ -21,16 +21,16 @@ function Header({
 
   return (
     isHeaderVisible &&
-    <header className={`header ${!isMainPage && 'header_type_dark'}`}>
+    <header className={`header ${!isMainPage ? 'header_type_dark' : ''}`}>
       <div className="header__container">
 
         <NavLink className="header__logo" to='/' />
 
         {loggedIn ?
           <>
-            <nav className={`header__nav ${isBurgerClicked && 'active'}`}>
+            <nav className={`header__nav ${isBurgerClicked ? 'active' : ''}`}>
               <ul className='header__nav-list'>
-                <li className='header__nav-item'>
+                <li className='header__nav-item header__nav-item_type_main'>
                   <NavLink
                     to='/'
                     onClick={handleBurgerClick}
@@ -76,7 +76,7 @@ function Header({
             </nav>
             <div
               onClick={handleBurgerClick}
-              className={`header__burger ${isBurgerClicked && 'active'}`}
+              className={`header__burger ${isBurgerClicked ? 'active' : ''}`}
             >
               <span />
             </div>

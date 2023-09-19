@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 
 import SearchForm from "./SearchForm/SearchForm"
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
 
-function Movies({ isSpinnerVisible, handleSaveMovies }) {
+function Movies({ isPreloaderVisible, handleSaveMovies }) {
   
   useEffect(() => {
     handleSaveMovies()
@@ -13,7 +13,7 @@ function Movies({ isSpinnerVisible, handleSaveMovies }) {
     <>
       <SearchForm filterText='Короткометражки' checkboxName='short-movies' />
       <MoviesCardList
-        isSpinnerVisible={isSpinnerVisible}
+        isPreloaderVisible={isPreloaderVisible}
       />
     </>
   );

@@ -43,12 +43,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 120px;
-    height: 120px;
+    width: 45px;
+    height: 45px;
     z-index: 10;
     position: absolute;
     top: 0;
-    left: 50%;
+    left: calc((100% - 45px) /2);
 }
 
 .preloader__container {
@@ -58,8 +58,8 @@
 }
 
 .preloader__round {
-    width: 100px;
-    height: 100px;
+    width: 45px;
+    height: 45px;
     position: absolute;
     top: 0;
     left: 0;
@@ -70,8 +70,8 @@
 .preloader__round::after,
 .preloader__round::before {
     content: '';
-    width: 100px;
-    height: 100px;
+    width: 45px;
+    height: 45px;
     position: absolute;
     top: 0;
     left: 0;

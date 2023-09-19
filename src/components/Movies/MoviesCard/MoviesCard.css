@@ -1,6 +1,6 @@
 .movies-card {
   color: #FFF;
-  font-family: Inter;
+  font-family: Inter, sans-serif;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -39,7 +39,7 @@
 .movies-card__like {
   width: 30px;
   height: 30px;
-  background: transparent url(../../../images/like-icon_inactive.png);
+  background: transparent url(../../../images/like-icon_inactive.svg);
   background-size: 30px;
   background-position: center;
   border: none;
@@ -55,11 +55,11 @@
 }
 
 .movies-card__like_type_liked {
-  background-image: url(../../../images/like-icon_active.png);
+  background-image: url(../../../images/like-icon_active.svg);
 }
 
 .movies-card__close-icon {
-  background-image: url(../../../images/close-icon.png);
+  background-image: url(../../../images/close-icon.svg);
 }
 
 .movies-card__duration {

@@ -23,16 +23,16 @@ function AboutProject() {
             </p>
           </div>
         </div>
-        <div className="about-project__timetable">
-          <div className="about-project__timetable-item">
-            <div className="about-project__time about-project__time_type_green">1 неделя</div>
-            <div className="about-project__tech">Back-end</div>
-          </div>
-          <div className="about-project__timetable-item">
-            <div className="about-project__time">4 недели</div>
-            <div className="about-project__tech">Front-end</div>
-          </div>
-        </div>
+        <span className="about-project__timetable">
+          <span className="about-project__timetable-item">
+            <span className="about-project__time about-project__time_type_green">1 неделя</span>
+            <span className="about-project__tech">Back-end</span>
+          </span>
+          <span className="about-project__timetable-item">
+            <span className="about-project__time">4 недели</span>
+            <span className="about-project__tech">Front-end</span>
+          </span>
+        </span>
       </div>
     </section>
   );

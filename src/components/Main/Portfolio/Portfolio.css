@@ -67,7 +67,7 @@
   width: 20px;
   height: 40px;
   margin-right: 5px;
-  background-image: url(../../../images/link-arrow.png);
+  background-image: url(../../../images/link-arrow.svg);
   background-size: 18px 18px;
   background-position: top 61% right 50%;
   background-repeat: no-repeat;
@@ -127,7 +127,6 @@
     width: 10px;
     height: 20px;
     margin-right: 4px;
-    background-image: url(../../../images/link-arrow.png);
     background-size: 10px 10px;
     background-position: top 25% right 50%;
   }

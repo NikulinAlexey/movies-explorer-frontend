@@ -25,14 +25,22 @@
   font-size: 13px;
   font-weight: 500;
   line-height: 16px;
+  opacity: 1;
+  transition: opacity .3s ease-in-out;
 }
 
 .nav-tab__list-item:hover {
-  cursor: default;
+  cursor: pointer;
+  opacity: .7;
 }
 
 .nav-tab__list-item:last-of-type {
   margin-right: 0;
+}
+
+.nav-tab__link {
+  text-decoration: none;
+  color: inherit;
 }
 
 @media screen and (max-width: 450px) {

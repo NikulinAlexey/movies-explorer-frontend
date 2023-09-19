@@ -28,7 +28,7 @@ function Portfolio() {
             <a
               target="blank"
               className="portfolio__link"
-              href="https://alekseynikulin-front15.nomoreparties.co/sign-in"
+              href="https://nikulinalexey.github.io/mesto-react/"
             >
               <p className="portfolio__link-text">Одностраничное приложение</p>
               <div className="portfolio__link-icon"></div>

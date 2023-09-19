@@ -12,6 +12,7 @@ function SearchForm({
         <form className="search-form__form" onSubmit={handleSubmit}>
           <div className="search-form__input-container">
             <input
+              required
               placeholder="Фильм"
               className="search-form__input"
             />
@@ -20,16 +21,15 @@ function SearchForm({
           <label className="search-form__label">
             <input
               type="checkbox"
-              name={checkboxName}
               id={checkboxName}
-              className="search-form__checkbox-input"
+              name={checkboxName}
               value={checkboxName}
+              className="search-form__checkbox-input"
             />
             <div className="search-form__pseudo-item"></div>
             <span className="search-form__filter-text">{filterText}</span>
           </label>
         </form>
-
       </div>
     </section>
   );

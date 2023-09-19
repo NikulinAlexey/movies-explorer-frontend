@@ -2,6 +2,7 @@ import { useState } from 'react';
 import useFormWithValidation from '../../hooks/useValidationForm';
 
 function Profile({
+  onSignout,
   name = 'Алексей',
   email = 'nikulin.aleksey.aleksandrovich@gmail.com',
 }) {
@@ -68,7 +69,7 @@ function Profile({
           <button className="profile__button" type='submit' >
             {isEditButtonClicked ? 'Сохранить' : 'Редактировать'}
           </button>
-          <button className="profile__button profile__button_type_sign-out">Выйти из аккаунта</button>
+          <button type='button' className="profile__button profile__button_type_sign-out" onClick={onSignout}>Выйти из аккаунта</button>
         </form>
       </div>
     </section>

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 function MoviesCard({
   movie,
@@ -18,7 +18,7 @@ function MoviesCard({
 
       <div className="movies-card__upper">
         <h2 className="movies-card__title"> {movie.title} </h2>
-        <div
+        <button
           type="button"
           aria-label="Лайк"
           onClick={handleLikeClick}

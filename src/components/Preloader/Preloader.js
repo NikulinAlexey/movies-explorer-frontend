@@ -2,10 +2,10 @@ import React from 'react'
 import './Preloader.css'
 
 const Preloader = ({
-    isSpinnerVisible,
+    isPreloaderVisible,
 }) => {
     return (
-        isSpinnerVisible &&
+        isPreloaderVisible &&
         <div className="preloader">
             <div className="preloader__container">
                 <span className="preloader__round"></span>
