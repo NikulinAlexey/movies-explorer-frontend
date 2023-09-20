@@ -1,0 +1,144 @@
+.profile {
+  color: #fff;
+  background: #202020;
+  box-sizing: border-box;
+  padding: 74px 0 0;
+  font-family: Inter, sans-serif;
+}
+
+.profile__container {
+  width: 410px;
+  margin: 0 auto;
+}
+
+.profile__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.profile__title {
+  margin: 0 0 123px 0;
+  text-align: center;
+  font-size: 24px;
+  font-weight: 500;
+  line-height: normal;
+}
+
+.profile__label {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: normal;
+  box-sizing: border-box;
+  padding-bottom: 13px;
+  border-bottom: 1px solid #424242;
+}
+
+.profile__label:last-of-type {
+  padding-bottom: 0;
+  border-bottom: none;
+  margin-bottom: 215px;
+  margin-top: 17px;
+}
+
+.profile__input {
+  font-weight: 400;
+  color: #FFF;
+  text-align: right;
+  font-family: Inter;
+  font-size: 11px;
+  line-height: normal;
+  background-color: #202020;
+  outline: none;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  max-width: 65%;
+  width: 65%;
+}
+
+.profile__input:focus {
+  border: 1px solid white;
+}
+
+.profile__input:hover {
+  cursor: default;
+}
+
+.profile__button {
+  text-align: center;
+  font-family: Inter;
+  color: #fff;
+  font-size: 13px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+  opacity: 1;
+  transition: all .3 ease-in-out;
+  background: transparent;
+  border: none;
+  margin-bottom: 16px;
+  padding: 0;
+}
+
+.profile__button:hover {
+  cursor: pointer;
+  opacity: .8;
+}
+
+.profile__button:last-of-type {
+  margin-bottom: 0;
+}
+
+.profile__button_type_sign-out {
+  color: #EE3465;
+  font-weight: 500;
+}
+
+@media screen and (max-width: 768px) {
+  .profile {
+    padding-top: 236px;
+  }
+
+  .profile__title {
+    margin-bottom: 96px;
+  }
+
+  .profile__label {
+    padding-bottom: 12px;
+  }
+
+  .profile__label:last-of-type {
+    margin-bottom: 206px;
+  }
+}
+
+@media screen and (max-width: 550px) {
+  .profile {
+    padding-top: 70px;
+  }
+
+  .profile__container {
+    width: 260px;
+  }
+
+  .profile__title {
+    margin-bottom: 80px;
+  }
+
+  .profile__input {
+    display: inline-block;
+    max-width: 75%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  .profile__button {
+    font-size: 12px;
+  }
+
+  .profile__label:last-of-type {
+    margin-bottom: 375px;
+  }
+}
