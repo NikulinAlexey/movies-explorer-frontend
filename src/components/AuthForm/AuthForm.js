@@ -1,24 +1,52 @@
 import { Link, useLocation } from 'react-router-dom';
 import useFormWithValidation from '../../hooks/useValidationForm';
+import { useEffect, useState } from 'react';
 
 function AuthForm({
   title,
   linkPath,
   linkText,
-  errorText,
+  onSubmit,
+  message,
   submitText,
+  messageSetter,
   paragraphText,
 }) {
   const location = useLocation();
-  const { values, handleChange, errors, resetForm } = useFormWithValidation();
+  const [isActiveSubmit, setIsActiveSubmit] = useState(false);
+  const { values, handleChange, errors, resetForm, isValid } = useFormWithValidation();
+  const [isValidEmailInput, setIsValidEmailInput] = useState(true);
+
+  function showActiveSubmitButton() {
+    return <button type='submit' className='auth-form__submit'>
+      {submitText}
+    </button>
+  }
+  function showDisabledSubmitButton() {
+    return <button disabled type='submit' className='auth-form__submit auth-form__submit_type_disabled'>
+      {submitText}
+    </button>
+  }
 
   function handleSubmit(e) {
     e.preventDefault();
-    
-    //Здесь будет функция API запроса
+
+    onSubmit(values);
 
     resetForm();
   }
+
+  useEffect(() => {
+    location.pathname === '/sign-in' ?
+      setIsActiveSubmit(isValid && values.password && values.email)
+      :
+      setIsActiveSubmit(isValid && values.name && values.email && values.password)
+
+  }, [values, location.pathname, isValid]);
+
+  useEffect(() => {
+    messageSetter('');
+  }, [location.pathname, messageSetter])
   return (
     <section className="auth-form">
       <div className='auth-form__container'>
@@ -33,10 +61,10 @@ function AuthForm({
               <input
                 id='name'
                 name='name'
-                type='name'
+                type='text'
                 minLength='3'
                 maxLength='20'
-                value={values.name}
+                value={values.name || ''}
                 onChange={handleChange}
                 placeholder='Введите ваше имя'
                 className={`auth-form__input ${errors.name ? 'auth-form__input_type_error' : ''}`}
@@ -51,7 +79,7 @@ function AuthForm({
               type='email'
               minLength='6'
               maxLength='50'
-              value={values.email}
+              value={values.email || ''}
               onChange={handleChange}
               placeholder='Введите ваш email'
               className={`auth-form__input ${errors.email ? 'auth-form__input_type_error' : ''}`}
@@ -65,18 +93,20 @@ function AuthForm({
               name='password'
               type='password'
               onChange={handleChange}
-              value={values.password}
+              value={values.password || ''}
               placeholder='Введите ваш пароль'
               className={`auth-form__input ${errors.password ? 'auth-form__input_type_error' : ''}`}
             />
           </label>
 
           <span id="name-input-error" className="auth-form__error">
-            {errorText}
+            {message}
           </span>
-          <button type='submit' className='auth-form__submit'>
-            {submitText}
-          </button>
+          {isActiveSubmit ?
+            showActiveSubmitButton()
+            :
+            showDisabledSubmitButton()
+          }
         </form>
 
         <p className='auth-form__paragraph'>

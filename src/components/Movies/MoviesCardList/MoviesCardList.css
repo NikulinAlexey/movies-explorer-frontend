@@ -12,6 +12,14 @@
   position: relative;
 }
 
+.movies-list__error {
+  color: #FF004C;
+  font-family: Inter;
+  font-size: 11px;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .movies-list__items {
   width: 100%;
   box-sizing: border-box;

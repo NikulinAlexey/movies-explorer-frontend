@@ -38,7 +38,7 @@
 }
 
 .search-form__input:focus {
-  border: 1px solid #fff;  
+  border: 1px solid #fff;
 }
 
 .search-form__button {
@@ -59,7 +59,26 @@
 
 .search-form__button:hover {
   cursor: pointer;
-  opacity: .8;
+  opacity: .3;
+}
+
+.search-form__button_type_disabled {
+  background-image: url(../../../images/search-icon-disabled.svg);
+}
+
+.search-form__button_type_disabled:hover {
+  opacity: 1;
+  cursor: default;
+}
+
+.search-form__error {
+  color: #EE3465;
+  font-size: 10px;
+  font-weight: 400;
+  line-height: normal;
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 19px;
 }
 
 .search-form__label {
@@ -104,6 +123,7 @@
 .search-form__checkbox-input:checked+.search-form__pseudo-item:hover {
   background-image: url(../../../images/smalltumb-active-hover.svg);
 }
+
 .search-form__filter-text {
   color: #FFF;
   font-family: Inter;

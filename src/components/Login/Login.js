@@ -1,17 +1,18 @@
 import AuthForm from '../AuthForm/AuthForm';
 
-function Login() {
+function Login({ onSubmit, message, messageSetter }) {
+
   return (
-    <section>
-      <AuthForm
-        submitText='Войти'
-        linkPath='/sign-up'
-        title='Рады видеть!'
-        linkText='Регистрация'
-        errorText='Ошибка авторизации'
-        paragraphText='Ещё не зарегистрированы?'
-      />
-    </section>
+    <AuthForm
+      message={message}
+      submitText='Войти'
+      linkPath='/sign-up'
+      onSubmit={onSubmit}
+      title='Рады видеть!'
+      linkText='Регистрация'
+      messageSetter={messageSetter}
+      paragraphText='Ещё не зарегистрированы?'
+    />
   );
 }
 

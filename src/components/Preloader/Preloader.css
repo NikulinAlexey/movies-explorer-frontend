@@ -47,7 +47,7 @@
     height: 45px;
     z-index: 10;
     position: absolute;
-    top: 0;
+    top: 100px;
     left: calc((100% - 45px) /2);
 }
 

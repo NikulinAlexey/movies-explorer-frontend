@@ -42,6 +42,7 @@
   background: transparent url(../../../images/like-icon_inactive.svg);
   background-size: 30px;
   background-position: center;
+  background-repeat: no-repeat;
   border: none;
   outline: none;
   padding: 0;
@@ -60,6 +61,7 @@
 
 .movies-card__close-icon {
   background-image: url(../../../images/close-icon.svg);
+  background-size: 11.6px;
 }
 
 .movies-card__duration {
@@ -68,6 +70,11 @@
   font-weight: 400;
   line-height: normal;
   margin: 0 auto 16px 16px;
+}
+
+.movies-card__link {
+  text-decoration: none;
+  color: inherit;
 }
 
 @media screen and (max-width: 768px) {

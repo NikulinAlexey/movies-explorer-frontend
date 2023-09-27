@@ -114,9 +114,19 @@
   align-items: center;
 }
 
+.auth-form__submit_type_disabled {
+  background-color: #F8F8F8;
+  color: #C2C2C2;
+}
+
 .auth-form__submit:hover {
   opacity: .8;
   cursor: pointer;
+}
+
+.auth-form__submit_type_disabled:hover {
+  cursor: default;
+  opacity: 1;
 }
 
 .auth-form__submit:focus {
