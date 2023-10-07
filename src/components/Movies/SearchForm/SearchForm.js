@@ -2,63 +2,69 @@ import { useEffect, useState } from 'react';
 import { useLocation } from 'react-router-dom';
 
 function SearchForm({
-  filterMovies,
+  movies,
   handleSubmit,
+  filterMoviesByCheckbox,
 }) {
-  
   const currentLocation = useLocation().pathname;
-  const lastSearch = (currentLocation === '/movies') ?
+  
+  const [message, setMessage] = useState('');
+  const [isSubmitClicked, setIsSubmitClicked] = useState(false);
+
+  const lastSearch = ((currentLocation === '/movies') && (localStorage.getItem('lastSearchMovies')) !== null) ?
     localStorage.getItem('lastSearchMovies')
     :
-    localStorage.getItem('lastSearchSavedMovies');
-  
-  const lastCheckboxState = (currentLocation === '/movies') ?
-    JSON.parse(localStorage.getItem('lastCheckboxStateMovies'))
-    :
-    JSON.parse(localStorage.getItem('lastCheckboxStateSavedMovies'))
-  
-  const [isFormValid, setIsFormValid] = useState(false);
-  const [validationMessage, setValidationMessage] = useState('');
+    '';
   const [searchInputValue, setSearchInputValue] = useState(lastSearch || '');
+ 
+  const getLastCheckboxState = () => {
+    if (currentLocation === '/movies') {
+      return JSON.parse(localStorage.getItem('lastCheckboxStateMovies'))
+    }
+  }
+  const lastCheckboxState = getLastCheckboxState();
   const [isChecked, setIsChecked] = useState(lastCheckboxState || false);
-  const [isSubmitClicked, setIsSubmitClicked] = useState(false);
   
-  function handleChangeSearchInputValue(e) {
-    setSearchInputValue(e.target.value);
-
-    setIsFormValid(e.target.closest("form").checkValidity());
-    setValidationMessage(e.target.validationMessage)
+  function onSubmit(e) {
+    e.preventDefault();
+    if (searchInputValue.length > 0) {
+      handleSubmit();
+    }
+    setIsSubmitClicked(true);
   }
 
   function handleChangeCheckbox() {
     setIsChecked(!isChecked);
   }
-
-  function onSubmit(e) {
-    setIsSubmitClicked(true);
-    handleSubmit(e, searchInputValue, isChecked);
-  }
-
+  // записываю в storage значения input-ов
   useEffect(() => {
-    currentLocation === '/movies' ? (
-      localStorage.setItem('lastCheckboxStateMovies', isChecked)
-    )
-      :
-      localStorage.setItem('lastCheckboxStateSavedMovies', isChecked)
-    
-    currentLocation === '/movies' ?
-      localStorage.setItem('lastSearchMovies', searchInputValue)
-      :
-      localStorage.setItem('lastSearchSavedMovies', searchInputValue)
+    if (currentLocation === '/movies') {
+      localStorage.setItem('lastSearchMovies', searchInputValue);
+      localStorage.setItem('lastCheckboxStateMovies', JSON.stringify(isChecked));
+    } else {
+      localStorage.setItem('lastSearchSavedMovies', searchInputValue);
+      localStorage.setItem('lastCheckboxStateSavedMovies', JSON.stringify(isChecked));
+
+    }
   }, [isChecked, searchInputValue, currentLocation]);
-  
-  useEffect(() => {
-    filterMovies(searchInputValue, isChecked)
-  }, [isChecked]);
 
   useEffect(() => {
-    setIsSubmitClicked(false)
-  }, [searchInputValue])
+    if (searchInputValue.length === 0) {
+      setMessage('Нужно ввести ключевое слово');
+    } else {
+      setMessage('')
+    }
+  }, [searchInputValue]);
+
+  useEffect(() => {
+    setIsSubmitClicked(false);
+  }, [searchInputValue]);
+
+  useEffect(() => {
+    if (movies !== null) {
+      filterMoviesByCheckbox(movies, searchInputValue, isChecked);
+    }
+  }, [isChecked]);
   return (
     <section className="search-form">
       <div className="search-form__container">
@@ -68,27 +74,17 @@ function SearchForm({
               required
               type='text'
               name='search'
-              minLength={2}
-              maxLength={50}
               placeholder="Фильм"
               value={searchInputValue}
-              onChange={handleChangeSearchInputValue}
+              onChange={(e) => setSearchInputValue(e.target.value)}
               className="search-form__input"
             />
-            {isFormValid ? 
-              <button
-                type="submit"
-                className='search-form__button'
-              />
-              :
-              <button
-                disabled
-                type="submit"
-                className='search-form__button search-form__button_type_disabled'
-              />
-            }
+            <button
+              type="submit"
+              className='search-form__button'
+            />
             
-            <span className="search-form__error">{isSubmitClicked && validationMessage}</span>
+            <span className="search-form__error">{isSubmitClicked && message}</span>
           </div>
           <label className="search-form__label">
             <input

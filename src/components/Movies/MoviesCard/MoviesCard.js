@@ -1,14 +1,14 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
 
 import { BASE_URL } from "../../../utils/MoviesApi";
 
 function MoviesCard({
   movie,
   location,
-  savedMovies,
-  changeLikeMovieStatus,
+  savedMovies = JSON.parse(localStorage.getItem('savedMovies')),
+  handleLikeMovie,
+  handleDeleteLike,
 }) {
   const {
     image,
@@ -17,9 +17,10 @@ function MoviesCard({
     director,
     trailerLink,
   } = movie;
-  
+
   const currentPath = location.pathname;
-  const isLikeActive = () => savedMovies.some(item => item.movieId === movie.id);
+  const currentMovie = savedMovies.find(item => item.id === movie.id);
+  const isLikeActive = () => savedMovies.some(item => item.id === movie.id);
   const [isLiked, setIsLiked] = useState(isLikeActive || false);
   
   function getFormattedDuration() {
@@ -31,22 +32,17 @@ function MoviesCard({
   const formattedDuration = getFormattedDuration();
 
   function toggleLike() {
-    const currentMovie = savedMovies.filter(item => item.movieId === movie.id)[0];
-    
-    setIsLiked(!isLiked)
-
     isLiked ?
-      // удалить лайк
-      changeLikeMovieStatus(currentMovie, true)
+      handleDeleteLike(currentMovie._id)
       :
-      // поставить лайк
-      changeLikeMovieStatus(movie, false);
+      handleLikeMovie(movie)
     
+    setIsLiked(!isLiked);
+  }
+  function deletelike() {
+    handleDeleteLike(currentMovie._id)
   }
 
-  function deletelike() {
-    changeLikeMovieStatus(movie, true)
-  }
   function showLikeButton() {
     return <button
       type="button"

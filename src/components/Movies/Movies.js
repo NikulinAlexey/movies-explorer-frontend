@@ -1,10 +1,13 @@
 import { useEffect, useState } from "react";
 
+import {
+  BIG_WINDOW_SIZE,
+}
+  from "../../utils/constants";
 import useWindowSizeX from "../../hooks/useWindowSizeX";
 
-import SearchForm from "./SearchForm/SearchForm"
+import SearchForm from "./SearchForm/SearchForm";
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
-
 
 function Movies({
   message,
@@ -12,99 +15,80 @@ function Movies({
   location,
   savedMovies,
   messageSetter,
-  getSavedMovies,
   handleGetMovies,
+  handleLikeMovie,
+  handleDeleteLike,
   isPreloaderVisible,
-  changeLikeMovieStatus,
+  filterMoviesByCheckbox,
+  howManyMoviesToShowFirst,
 }) {
   const currentSizeX = useWindowSizeX();
-  const lastSearchMoviesResult = JSON.parse(localStorage.getItem('moviesToShow'));
-  const [howManyMoviesToShow, setHowManyMoviesToShow] = useState(12);
-  const [moviesToShow, setMoviesToShow] = useState(lastSearchMoviesResult || movies.slice(0, howManyMoviesToShow));
+  const lastSearchResult = JSON.parse(localStorage.getItem('lastSearchResult')) !== null ?
+    JSON.parse(localStorage.getItem('lastSearchResult'))
+    :
+    [];
   const [isAddButtonVisible, setIsAddButtonVisible] = useState(false);
-  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [howManyMoviesToShow, setHowManyMoviesToShow] = useState(howManyMoviesToShowFirst);
+  const [moviesToShow, setMoviesToShow] = useState(lastSearchResult || movies.slice(0, howManyMoviesToShowFirst));
 
-  function changeSymbolsToLowerCase(movieNameRu, movieNameEn, searchString) {
-    const newMovieNameRu = movieNameRu.toLowerCase();
-    const newMovieNameEn = movieNameEn.toLowerCase();
-    const newSearchString = searchString.toLowerCase();
-
-    return { newMovieNameRu, newMovieNameEn, newSearchString }
-  }
-  function isIncludesSearch(movieNameRu, movieNameEn, searchString) {
-    const { newMovieNameRu, newMovieNameEn, newSearchString } = changeSymbolsToLowerCase(movieNameRu, movieNameEn, searchString);
-
-    const isIncludes = newMovieNameRu.includes(newSearchString) || newMovieNameEn.includes(newSearchString)
-
-    return isIncludes;
-  }
-  function filterMovies(searchInputValue, isCheckboxChecked) {
-    isCheckboxChecked ?
-      setMoviesToShow(movies.filter((movie) => isIncludesSearch(movie.nameRU, movie.nameEN, searchInputValue) && movie.duration <= 40))
-      :
-      setMoviesToShow(movies.filter((movie) => isIncludesSearch(movie.nameRU, movie.nameEN, searchInputValue)))
-  }
-  function handleSubmit(e, searchInputValue, isCheckboxChecked) {
-    e.preventDefault();
-
+  function handleSubmit() {
     handleGetMovies();
-
-    filterMovies(searchInputValue, isCheckboxChecked);
-    console.log('filteredMovies from Movies', filteredMovies)
   }
-  
-  function handleAddMovies() {
-    if (currentSizeX > 1024) {
-      setHowManyMoviesToShow(howManyMoviesToShow + 3);
 
-      // if (moviesToShow.length % howManyMoviesToShow === 1) {
-      //   setHowManyMoviesToShow(howManyMoviesToShow + 5);
-      // } else if (moviesToShow.length % howManyMoviesToShow > 1) {
-      //   setHowManyMoviesToShow(howManyMoviesToShow + 4);
-      // }
-      
+  // Определяю сколько добавить фильмов при клике на кнопку "Ещё"
+  function handleAddMovies() {
+    if (currentSizeX > BIG_WINDOW_SIZE) {
+      setHowManyMoviesToShow(howManyMoviesToShow + 3);
     } else {
-      setHowManyMoviesToShow(howManyMoviesToShow + 2)
+      setHowManyMoviesToShow(howManyMoviesToShow + 2);
     }
   }
 
-  // Вырезаю из основного массива фильмов нужное кол-во.
   useEffect(() => {
-    setMoviesToShow(lastSearchMoviesResult || filteredMovies.slice(0, howManyMoviesToShow));
-  }, [howManyMoviesToShow, filteredMovies]);
+    setMoviesToShow(movies.slice(0, howManyMoviesToShow));
+  }, [movies, howManyMoviesToShow]);
 
   useEffect(() => {
-    localStorage.setItem('moviesToShow', JSON.stringify(moviesToShow))
-  }, [moviesToShow]);
-
-  useEffect(() => {
-    getSavedMovies();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    messageSetter('');
   }, []);
 
+  //Проверка на видимость кнопки "Ещё"
   useEffect(() => {
-    const isLastSearchMovies = localStorage.getItem('lastSearchMovies') === '';
-    if (isLastSearchMovies) {
-      messageSetter('')
+    if (movies.length > moviesToShow.length && moviesToShow.length !== 0) {
+      setIsAddButtonVisible(true)
+    } else {
+      setIsAddButtonVisible(false)
     }
-  }, [])
-  
+  }, [movies, moviesToShow]);
+
+  useEffect(() => {
+    localStorage.setItem('lastSearchResult', JSON.stringify(moviesToShow));
+  }, [moviesToShow]);
+
   return (
     <>
-      <SearchForm handleSubmit={handleSubmit} filterMovies={filterMovies} />
-      <MoviesCardList
+      <SearchForm
+        movies={movies}
+        message={message}
+        handleSubmit={handleSubmit}
+        filterMoviesByCheckbox={filterMoviesByCheckbox}
+      />
+
+      < MoviesCardList
         message={message}
         location={location}
         movies={moviesToShow}
         savedMovies={savedMovies}
         messageSetter={messageSetter}
         handleAddMovies={handleAddMovies}
+        handleLikeMovie={handleLikeMovie}
+        handleDeleteLike={handleDeleteLike}
         isAddButtonVisible={isAddButtonVisible}
         isPreloaderVisible={isPreloaderVisible}
-        changeLikeMovieStatus={changeLikeMovieStatus}
       />
     </>
-  );
+  )
+
 }
 
 export default Movies;

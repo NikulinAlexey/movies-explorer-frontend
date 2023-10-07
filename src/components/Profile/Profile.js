@@ -1,24 +1,23 @@
-import { useState, useEffect } from 'react';
-import useFormWithValidation from '../../hooks/useValidationForm';
+import { useState, useEffect, useContext } from 'react';
 
 import Preloader from '../Preloader/Preloader';
+import useFormWithValidation from '../../hooks/useValidationForm';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile({
-  user,
   message,
   onSignout,
+  messageSetter,
   isPreloaderVisible,
   handleUpdateProfile,
 }) {
+  const user = useContext(CurrentUserContext);
   const { name, email } = user;
+ 
   const [isEditButtonClicked, setIsEditButtonClicked] = useState(false);
-  const { values, handleChange, errors, isValid } = useFormWithValidation(email, name);
   const [isSubmitButtonActive, setIsSubmitButtonActive] = useState(true);
-
-  function isValidEmail(email) {
-    return /^[a-zA-Z0-9]+@[a-zA-Z0-9]+\.[A-Za-z]+$/.test(email);
-  }
-
+  const { values, handleChange, errors, isValid } = useFormWithValidation(email , name);
+  
   function onUpdateUser(e) {
     e.preventDefault();
     
@@ -50,7 +49,7 @@ function Profile({
           maxLength='80'
           value={values.email}
           onChange={handleChange}
-          className={`profile__input ${errors.email ? 'profile__input_type_error' : '' }`}
+          className={`profile__input ${errors.email ? 'profile__input_type_error' : ''}`}
         />
       </label>
       {isSubmitButtonActive ?
@@ -96,7 +95,7 @@ function Profile({
           className="profile__input"
         />
       </label>
-      <span className='profile__error'>{message}</span>
+      <span className='profile__message'>{message}</span>
       <button
         className="profile__button"
         onClick={() => setIsEditButtonClicked(true)}
@@ -113,24 +112,23 @@ function Profile({
     </>
   }
 
+  useEffect(() => {
+    setIsSubmitButtonActive(isValid && (values.name !== '' || values.email!== '') && (values.name !== name || values.email !== email));
+    
+    // console.log({
+    //   'values': values,
+    //   'isValid': isValid,
+    //   'values.name': values.name !== "",
+    //   'values.email': values.email !== "",
+    //   'values.name1': values.name !== name,
+    //   'values.email1': values.email !== email,
+    // });
+  }, [values, isValid, name, email, isSubmitButtonActive])
 
 
   useEffect(() => {
-    const isValidEmailInput = isValidEmail(values.email)
-    setIsSubmitButtonActive(isValid && (values.name.length !== 0 || values.email.length !== 0) && (values.name !== name || values.email !== email));
-    
-    console.log('isSubmitButtonActive', isSubmitButtonActive)
-    console.log({
-      'values': values,
-      'isValid': isValid,
-      'isValidEmailInput': isValidEmailInput,
-      'values.name': values.name !== "",
-      'values.email': values.email !== "",
-      'values.name1': values.name !== name,
-      'values.email1': values.email !== email,
-    });
-  }, [values, isValid, name, email, isSubmitButtonActive])
-
+    messageSetter('')
+  }, []);
   return (
     <section className="profile">
       <Preloader isPreloaderVisible={isPreloaderVisible} />

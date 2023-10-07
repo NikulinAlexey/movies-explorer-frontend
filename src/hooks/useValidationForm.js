@@ -1,7 +1,8 @@
-import {useState, useCallback } from "react";
+import { useState, useCallback } from "react";
+import { validate } from 'react-email-validator';
 
-export default function useFormWithValidation(startedEmail, startedName) {
-  const [values, setValues] = useState({ name: startedName, email: startedEmail });
+export default function useFormWithValidation(email, name) {
+  const [values, setValues] = useState({ email, name });
   const [errors, setErrors] = useState({});
   const [isValid, setIsValid] = useState(false);
 
@@ -11,7 +12,7 @@ export default function useFormWithValidation(startedEmail, startedName) {
     const value = target.value;
     setValues({ ...values, [name]: value });
     setErrors({ ...errors, [name]: target.validationMessage });
-    setIsValid(target.closest("form").checkValidity());
+    setIsValid(target.closest("form").checkValidity() && validate(values.email));
   };
 
   const resetForm = useCallback(

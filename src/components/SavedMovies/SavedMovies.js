@@ -10,58 +10,36 @@ function SavedMovies({
   messageSetter,
   getSavedMovies,
   handleGetMovies,
+  handleLikeMovie,
+  handleDeleteLike,
   isPreloaderVisible,
-  changeLikeMovieStatus,
+  filterSavedMoviesByCheckbox,
 }) {
-  const [moviesToShow, setMoviesToShow] = useState(savedMovies);
-
-  function changeSymbolsToLowerCase(movieNameRu, movieNameEn, searchString) {
-    const newMovieNameRu = movieNameRu.toLowerCase();
-    const newMovieNameEn = movieNameEn.toLowerCase();
-    const newSearchString = searchString.toLowerCase();
-
-    return { newMovieNameRu, newMovieNameEn, newSearchString }
-  }
-
-  function isIncludesSearch(movieNameRu, movieNameEn, searchString) {
-    const { newMovieNameRu, newMovieNameEn, newSearchString } = changeSymbolsToLowerCase(movieNameRu, movieNameEn, searchString);
-
-    const isIncludes = newMovieNameRu.includes(newSearchString) || newMovieNameEn.includes(newSearchString)
-
-    return isIncludes;
-  }
-
-  function filterMovies(searchInputValue, isCheckboxChecked) {
-    isCheckboxChecked ?
-      setMoviesToShow(savedMovies.filter((movie) =>
-        isIncludesSearch(movie.nameRU, movie.nameEN, searchInputValue) && movie.duration <= 40))
-      :
-      setMoviesToShow(savedMovies.filter((movie) =>
-        isIncludesSearch(movie.nameRU, movie.nameEN, searchInputValue)))
-  }
-
-  function handleSubmit(e, searchInputValue, isCheckboxChecked) {
-    e.preventDefault();
-
-    filterMovies(searchInputValue, isCheckboxChecked);
+  function handleSubmit() {
+    getSavedMovies();
   }
 
   useEffect(() => {
-    setMoviesToShow(savedMovies);
-  },[savedMovies])
+    getSavedMovies()
+  }, []);
   
   return (
     <>
-      <SearchForm handleSubmit={handleSubmit} filterMovies={filterMovies} />
+      <SearchForm
+        movies={savedMovies}
+        handleSubmit={handleSubmit}
+        filterMoviesByCheckbox={filterSavedMoviesByCheckbox}
+      />
       <MoviesCardList
         message={message}
         location={location}
-        movies={moviesToShow}
+        movies={savedMovies}
         savedMovies={savedMovies}
         messageSetter={messageSetter}
         handleGetMovies={handleGetMovies}
+        handleLikeMovie={handleLikeMovie}
+        handleDeleteLike={handleDeleteLike}
         isPreloaderVisible={isPreloaderVisible}
-        changeLikeMovieStatus={changeLikeMovieStatus}
       />
     </>
   );

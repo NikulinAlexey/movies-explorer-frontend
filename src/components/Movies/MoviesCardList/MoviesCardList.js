@@ -1,44 +1,48 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Preloader from "../../Preloader/Preloader";
 import MoviesCard from "../MoviesCard/MoviesCard";
 
 function MoviesCardList({
   movies,
-  message,
   location,
   savedMovies,
-  messageSetter,
   handleAddMovies,
   isAddButtonVisible,
   isPreloaderVisible,
-  changeLikeMovieStatus,
+  handleLikeMovie,
+  handleDeleteLike,
 }) {
-  const isAnyResult = movies.length !== 0;
-  const areMoviesVisible = isAnyResult && !isPreloaderVisible;
-  
+  const [message, setMessage] = useState('');
+
   useEffect(() => {
-    isAnyResult ?
-      messageSetter('')
-      :
-      messageSetter('Ничего не найдено')
-  }, [isAnyResult, location]);
+    const isInputEmpty = localStorage.getItem('lastSearchMovies').length === 0 || localStorage.getItem('lastSearchSavedMovies') === null;
+
+    if (isInputEmpty) {
+      setMessage('')
+    } else if (movies.length === 0) {
+      setMessage('Ничего не найдено')
+    } else {
+      setMessage('')
+    }
+  }, [location, movies]);
   
   return (
     <section className="movies-list">
       <div className="movies-list__container">
-        {message && !isPreloaderVisible && <span className="movies-list__error">{message}</span>}
+        {!isPreloaderVisible && <span className="movies-list__error">{message}</span>}
         <>
           <Preloader isPreloaderVisible={isPreloaderVisible} />
-          {areMoviesVisible ?
+          {!isPreloaderVisible &&
             <>
               <ul className="movies-list__items">
-                {movies.map((movie, i) => (
-                  <li key={i} className="movies-list__item">
+                {movies.map((movie) => (
+                  <li key={movie.id} className="movies-list__item">
                     <MoviesCard
                       movie={movie}
                       location={location}
                       savedMovies={savedMovies}
-                      changeLikeMovieStatus={changeLikeMovieStatus}
+                      handleLikeMovie={handleLikeMovie}
+                      handleDeleteLike={handleDeleteLike}
                     />
                   </li>
                 ))}
@@ -51,8 +55,6 @@ function MoviesCardList({
                   Ещё
                 </button>}
             </>
-            :
-            <></>
           }
         </>
 

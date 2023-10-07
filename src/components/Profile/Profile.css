@@ -53,6 +53,16 @@
   line-height: normal;
 }
 
+.profile__message {
+  color: #0ad156;
+  text-align: center;
+  font-family: Inter;
+  font-size: 11px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
+
 .profile__input {
   font-weight: 400;
   color: #FFF;

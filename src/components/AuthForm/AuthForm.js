@@ -2,6 +2,8 @@ import { Link, useLocation } from 'react-router-dom';
 import useFormWithValidation from '../../hooks/useValidationForm';
 import { useEffect, useState } from 'react';
 
+import { validate } from 'react-email-validator';
+
 function AuthForm({
   title,
   linkPath,
@@ -14,7 +16,7 @@ function AuthForm({
 }) {
   const location = useLocation();
   const [isActiveSubmit, setIsActiveSubmit] = useState(false);
-  const { values, handleChange, errors, resetForm, isValid } = useFormWithValidation();
+  const { values, handleChange, errors, isValid } = useFormWithValidation();
   const [isValidEmailInput, setIsValidEmailInput] = useState(true);
 
   function showActiveSubmitButton() {
@@ -32,8 +34,6 @@ function AuthForm({
     e.preventDefault();
 
     onSubmit(values);
-
-    resetForm();
   }
 
   useEffect(() => {
