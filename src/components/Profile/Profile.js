@@ -114,15 +114,6 @@ function Profile({
 
   useEffect(() => {
     setIsSubmitButtonActive(isValid && (values.name !== '' || values.email!== '') && (values.name !== name || values.email !== email));
-    
-    // console.log({
-    //   'values': values,
-    //   'isValid': isValid,
-    //   'values.name': values.name !== "",
-    //   'values.email': values.email !== "",
-    //   'values.name1': values.name !== name,
-    //   'values.email1': values.email !== email,
-    // });
   }, [values, isValid, name, email, isSubmitButtonActive])
 
 

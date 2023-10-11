@@ -1,5 +1,5 @@
-const BASE_URL = 'https://alekseyNikulin-graduate-b.nomoreparties.co';
-// const BASE_URL = 'http://localhost:3001';
+// const BASE_URL = 'https://alekseyNikulin-graduate-b.nomoreparties.co';
+const BASE_URL = 'http://localhost:3001';
 const credentials = 'include';
 const headers = {
   'Content-Type': 'application/json',

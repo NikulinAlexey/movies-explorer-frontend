@@ -15,12 +15,8 @@ function MoviesCardList({
   const [message, setMessage] = useState('');
 
   useEffect(() => {
-    const isInputEmpty = localStorage.getItem('lastSearchMovies').length === 0 || localStorage.getItem('lastSearchSavedMovies') === null;
-
-    if (isInputEmpty) {
-      setMessage('')
-    } else if (movies.length === 0) {
-      setMessage('Ничего не найдено')
+    if (movies.length === 0) {
+      setMessage('Ничего не найдено') 
     } else {
       setMessage('')
     }

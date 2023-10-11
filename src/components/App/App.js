@@ -11,6 +11,7 @@ import Register from '../Register/Register';
 import SavedMovies from '../SavedMovies/SavedMovies';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import ProtectedRouteElement from '../ProtectedRouteElement';
+import ProtectedRouteForAuthForm from '../ProtectedRouteForAuthForm';
 
 import * as MainApi from '../../utils/MainApi';
 import * as MoviesApi from '../../utils/MoviesApi';
@@ -34,7 +35,7 @@ function App() {
 
   const [user, setUser] = useState({});
   const [movies, setMovies] = useState([]);
-  const [filteredMoviesData, setFilteredMoviesData] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
   const [filteredSavedMovies, setFilteredSavedMovies] = useState([]);
   
   const [message, setMessage] = useState('');
@@ -61,10 +62,10 @@ function App() {
     if (movies !== null && allMovies !== null) {
       if (isChecked) {
         const filteredMovies = getFilteredMovies(movies, textInputValue, isChecked);
-        setMovies(filteredMovies);
+        setFilteredMovies(filteredMovies);
       } else {
         const filteredMovies = getFilteredMovies(allMovies, textInputValue, isChecked);
-        setMovies(filteredMovies);
+        setFilteredMovies(filteredMovies);
       }
     }
   }
@@ -72,92 +73,67 @@ function App() {
     const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
     if (movies !== null && savedMovies !== null) {
       if (isChecked) {
-        const filteredMovies = getFilteredMovies(movies, textInputValue, isChecked);
-        setSavedMovies(filteredMovies);
+        const filteredSavedMovies = getFilteredMovies(savedMovies, textInputValue, isChecked);
+        setFilteredSavedMovies(filteredSavedMovies);
       } else {
-        const filteredMovies = getFilteredMovies(savedMovies, textInputValue, isChecked);
-        setSavedMovies(filteredMovies);
+        const filteredSavedMovies = getFilteredMovies(savedMovies, textInputValue, isChecked);
+        setFilteredSavedMovies(filteredSavedMovies);
       }
     }
   }
 
-  function getSavedMovies() {
-    MainApi.getSavedMovies()
-      .then((savedMovies) => {
-        const reversedSavedMovies = savedMovies.reverse();
-        const savedMovieInputValue = localStorage.getItem('lastSearchSavedMovies');
-        const isSavedMovieCheckboxChecked = JSON.parse(localStorage.getItem('lastCheckboxStateSavedMovies'));
-        
-        localStorage.setItem('savedMovies', JSON.stringify(reversedSavedMovies));
-
-        const filteredSavedMovies = getFilteredMovies(reversedSavedMovies, savedMovieInputValue, isSavedMovieCheckboxChecked)
-        
-        setSavedMovies(filteredSavedMovies);
-      })
-      .catch((err) => {
-        console.log(err)
-        setMessage(err)
-      })
-  };
   function getAllMovies() {
     setIsPreloaderVisible(true);
 
     MoviesApi.getFilms()
       .then((moviesData) => {
+        setMovies(moviesData);
         localStorage.setItem('movies', JSON.stringify(moviesData));
         const movieInputValue = localStorage.getItem('lastSearchMovies');
         const isMovieCheckboxChecked = JSON.parse(localStorage.getItem('lastCheckboxStateMovies'));
 
         const filteredMovies = getFilteredMovies(moviesData, movieInputValue, isMovieCheckboxChecked);
-        setFilteredMoviesData(filteredMovies);
-        setMovies(filteredMovies);
+
+        setFilteredMovies(filteredMovies);
       })
       .catch((err) => setMessage(err))
       .finally(() => setIsPreloaderVisible(false))
   };
+  function getSavedMovies() {
+    setIsPreloaderVisible(true)
+
+    MainApi.getSavedMovies()
+      .then((savedMovies) => {
+        const reversedSavedMovies = savedMovies.reverse();
+        const savedMovieInputValue = localStorage.getItem('lastSearchSavedMovies');
+        const isSavedMovieCheckboxChecked = JSON.parse(localStorage.getItem('lastCheckboxStateSavedMovies'));
+
+        localStorage.setItem('savedMovies', JSON.stringify(reversedSavedMovies));
+
+        const filteredSavedMovies = getFilteredMovies(reversedSavedMovies, savedMovieInputValue, isSavedMovieCheckboxChecked)
+
+        setFilteredSavedMovies(filteredSavedMovies);
+      })
+      .catch((err) => {
+        console.log(err)
+        setMessage(err)
+      })
+      .finally(() => setIsPreloaderVisible(false))
+  };
   function handleGetMovies() {
-    if (savedMovies) {
-      getAllMovies()
+    if (movies.length !== 0) {
+      const movieInputValue = localStorage.getItem('lastSearchMovies');
+      const isMovieCheckboxChecked = JSON.parse(localStorage.getItem('lastCheckboxStateMovies'));
+
+      const filteredMovies = getFilteredMovies(movies, movieInputValue, isMovieCheckboxChecked);
+
+      setFilteredMovies(filteredMovies);
     } else {
       getSavedMovies()
-        .then(() => {
-          getAllMovies()
-        })
-        .catch((err) => {
-          console.log(err)
-        })
+      getAllMovies()
     }
   };
 
-  function handleRegister(values) {
-    MainApi.register(values)
-      .then((user) => {
-        setLoggedIn(true);
-        localStorage.setItem('loggedIn', true);
-        setMessage(`Успешная регистрация, ${user.name}`);
-        setUser(user);
-      })
-      .then(() => navigate('/movies'))
-      .catch((err) => {
-        setMessage(err)
-        console.log(err)
-      });
-  };
-  function handleAuthorize(values) {
-    MainApi.authorize(values)
-      .then((user) => {
-        setLoggedIn(true);
-        localStorage.setItem('loggedIn', true);
-        setUser(user);
-      })
-      .then(() => {
-        navigate('/movies');
-      })
-      .catch((err) => {
-        setMessage(err);
-        console.log(err)
-      });
-  };
   function onSignout() {
     MainApi.signOut()
       .then(() => {
@@ -169,6 +145,65 @@ function App() {
         console.log(err);
       })
   };
+  function handleRegister(values) {
+    setIsPreloaderVisible(true);
+
+    MainApi.register(values)
+      .then((user) => {
+        setLoggedIn(true);
+        localStorage.setItem('loggedIn', true);
+        setMessage(`Успешная регистрация, ${user.name}`);
+        setUser(user);
+      })
+      .then(() => navigate('/movies'))
+      .catch((err) => {
+        setMessage('При регистрации произошла ошибка');
+        console.log(err);
+      })
+      .finally(() => setIsPreloaderVisible(false))
+  };
+  function handleAuthorize(values) {
+    setIsPreloaderVisible(true);
+
+    MainApi.authorize(values)
+      .then((user) => {
+        setLoggedIn(true);
+        localStorage.setItem('loggedIn', true);
+        setUser(user);
+      })
+      .then(() => {
+        navigate('/movies');
+      })
+      .catch((err) => {
+        setMessage('При авторизации произошла ошибка');
+        console.log(err)
+      })
+    .finally(() => setIsPreloaderVisible(false))
+  };
+
+  function handleLikeMovie(movie) {
+    MainApi.likeMovie(movie)
+      .then((likedMovie) => {
+        setSavedMovies(savedMovies.concat([likedMovie]));
+        setFilteredSavedMovies(filteredSavedMovies.concat([likedMovie]));
+        localStorage.setItem('savedMovies', JSON.stringify(savedMovies.concat([likedMovie])));
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  }
+  function handleDeleteLike(movieId) {
+    MainApi.deleteMovie(movieId)
+      .then((deletedMovie) => {
+        setSavedMovies(savedMovies.filter(item => item._id !== deletedMovie._id));
+        setFilteredSavedMovies(filteredSavedMovies.filter(item => item._id !== deletedMovie._id));
+        localStorage.setItem('savedMovies', JSON.stringify(savedMovies.filter(item => item._id !== deletedMovie._id)));
+      })
+      .catch((err) => {
+        console.log(err)
+      })
+  };
+
   function handleUpdateProfile(name, email) {
     setIsPreloaderVisible(true);
 
@@ -185,36 +220,10 @@ function App() {
         setIsPreloaderVisible(false);
       })
   };
-  function handleDeleteLike(movieId) {
-    MainApi.deleteMovie(movieId)
-      .then((deletedMovie) => {
-        setSavedMovies(savedMovies.filter(item => item._id !== deletedMovie._id));
 
-        return deletedMovie;
-      })
-      .then((deletedMovie) => {
-        localStorage.setItem('savedMovies', JSON.stringify(savedMovies.filter(item => item._id !== deletedMovie._id)));
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  };
-
-  function handleLikeMovie(movie) {
-    MainApi.likeMovie(movie)
-      .then((likedMovie) => {
-        setSavedMovies(savedMovies.concat([likedMovie]));
-
-        return likedMovie;
-      })
-      .then((likedMovie) => {
-        localStorage.setItem('savedMovies', JSON.stringify(savedMovies.concat([likedMovie])));
-      })
-      .catch((err) => {
-        console.log(err)
-      })
-  }
-
+  // useEffect(() => {
+  //   setFilteredSavedMovies(savedMovies);
+  // }, []);
   useEffect(() => {
     MainApi.checkToken()
       .then((user) => {
@@ -264,10 +273,10 @@ function App() {
                   message={message}
                   loggedIn={loggedIn}
                   location={location}
-                  savedMovies={savedMovies}
                   messageSetter={messageSetter}
                   getSavedMovies={getSavedMovies}
                   handleLikeMovie={handleLikeMovie}
+                  savedMovies={filteredSavedMovies}
                   handleDeleteLike={handleDeleteLike}
                   isPreloaderVisible={isPreloaderVisible}
                   filterSavedMoviesByCheckbox={filterSavedMoviesByCheckbox}
@@ -280,14 +289,14 @@ function App() {
               element={
                 <ProtectedRouteElement
                   element={Movies}
-                  movies={movies}
                   message={message}
                   location={location}
                   loggedIn={loggedIn}
+                  movies={filteredMovies}
                   savedMovies={savedMovies}
                   messageSetter={messageSetter}
-                  handleGetMovies={handleGetMovies}
                   handleLikeMovie={handleLikeMovie}
+                  handleGetMovies={handleGetMovies}
                   handleDeleteLike={handleDeleteLike}
                   isPreloaderVisible={isPreloaderVisible}
                   filterMoviesByCheckbox={filterMoviesByCheckbox}
@@ -296,22 +305,27 @@ function App() {
               }
             />
 
-            <Route
-              path='/sign-in'
-              element={<Login
+            <Route path='/sign-in'
+              element={<ProtectedRouteForAuthForm
+                element={Login}
                 message={message}
+                loggedIn={loggedIn}
                 location={location}
                 onSubmit={handleAuthorize}
                 messageSetter={messageSetter}
+                isPreloaderVisible={isPreloaderVisible}
               />}
             />
-            <Route
-              path='/sign-up'
-              element={<Register
+
+            <Route path='/sign-up'
+              element={<ProtectedRouteForAuthForm
+                element={Register}
                 message={message}
+                loggedIn={loggedIn}
                 location={location}
                 onSubmit={handleRegister}
                 messageSetter={messageSetter}
+                isPreloaderVisible={isPreloaderVisible}
               />}
             />
 

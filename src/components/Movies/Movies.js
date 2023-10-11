@@ -10,8 +10,8 @@ import SearchForm from "./SearchForm/SearchForm";
 import MoviesCardList from "./MoviesCardList/MoviesCardList";
 
 function Movies({
-  message,
   movies,
+  message,
   location,
   savedMovies,
   messageSetter,
@@ -32,6 +32,9 @@ function Movies({
   const [moviesToShow, setMoviesToShow] = useState(lastSearchResult || movies.slice(0, howManyMoviesToShowFirst));
 
   function handleSubmit() {
+    // перед каждым поиском обновляю кол-во отображаемых карточек согласно текущему размеру экрана:
+    setHowManyMoviesToShow(howManyMoviesToShowFirst);
+
     handleGetMovies();
   }
 
@@ -48,10 +51,6 @@ function Movies({
     setMoviesToShow(movies.slice(0, howManyMoviesToShow));
   }, [movies, howManyMoviesToShow]);
 
-  useEffect(() => {
-    messageSetter('');
-  }, []);
-
   //Проверка на видимость кнопки "Ещё"
   useEffect(() => {
     if (movies.length > moviesToShow.length && moviesToShow.length !== 0) {
@@ -64,7 +63,6 @@ function Movies({
   useEffect(() => {
     localStorage.setItem('lastSearchResult', JSON.stringify(moviesToShow));
   }, [moviesToShow]);
-
   return (
     <>
       <SearchForm

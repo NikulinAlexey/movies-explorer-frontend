@@ -17,7 +17,7 @@ function SavedMovies({
 }) {
   function handleSubmit() {
     getSavedMovies();
-  }
+  };
 
   useEffect(() => {
     getSavedMovies()
