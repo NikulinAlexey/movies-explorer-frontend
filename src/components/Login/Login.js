@@ -1,17 +1,23 @@
 import AuthForm from '../AuthForm/AuthForm';
 
-function Login() {
+function Login({
+  message,
+  onSubmit,
+  messageSetter,
+  isPreloaderVisible,
+}) {
   return (
-    <section>
-      <AuthForm
-        submitText='Войти'
-        linkPath='/sign-up'
-        title='Рады видеть!'
-        linkText='Регистрация'
-        errorText='Ошибка авторизации'
-        paragraphText='Ещё не зарегистрированы?'
-      />
-    </section>
+    <AuthForm
+      message={message}
+      submitText='Войти'
+      linkPath='/sign-in'
+      onSubmit={onSubmit}
+      title='Рады видеть!'
+      linkText='Регистрация'
+      messageSetter={messageSetter}
+      paragraphText='Ещё не зарегистрированы?'
+      isPreloaderVisible={isPreloaderVisible}
+    />
   );
 }
 

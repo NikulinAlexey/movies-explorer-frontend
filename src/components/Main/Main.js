@@ -6,6 +6,7 @@ import Portfolio from './Portfolio/Portfolio'
 import AboutProject from "./AboutProject/AboutProject";
 
 function Main() {
+ 
   return (
     <>
       <Promo />

@@ -1,16 +1,45 @@
+import { useEffect, useState } from 'react';
+
 import SearchForm from '../Movies/SearchForm/SearchForm';
 import MoviesCardList from '../Movies/MoviesCardList/MoviesCardList';
 
 function SavedMovies({
-  movies,
-  isSpinnerVisible,
+  message,
+  location,
+  savedMovies,
+  messageSetter,
+  getSavedMovies,
+  handleGetMovies,
+  handleLikeMovie,
+  handleDeleteLike,
+  isPreloaderVisible,
+  filterSavedMoviesByCheckbox,
 }) {
+  function handleSubmit() {
+    getSavedMovies();
+  };
+
+  useEffect(() => {
+    getSavedMovies()
+  }, []);
+  
   return (
     <>
-      <SearchForm filterText='Короткометражки' checkboxName='short-movies' />
+      <SearchForm
+        movies={savedMovies}
+        handleSubmit={handleSubmit}
+        filterMoviesByCheckbox={filterSavedMoviesByCheckbox}
+      />
       <MoviesCardList
-        movies={movies}
-        isSpinnerVisible={isSpinnerVisible}
+        message={message}
+        location={location}
+        movies={savedMovies}
+        savedMovies={savedMovies}
+        messageSetter={messageSetter}
+        handleGetMovies={handleGetMovies}
+        handleLikeMovie={handleLikeMovie}
+        handleDeleteLike={handleDeleteLike}
+        isPreloaderVisible={isPreloaderVisible}
       />
     </>
   );

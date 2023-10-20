@@ -1,77 +1,142 @@
-import { useState } from 'react';
+import { useState, useEffect, useContext } from 'react';
+
+import Preloader from '../Preloader/Preloader';
 import useFormWithValidation from '../../hooks/useValidationForm';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
 function Profile({
+  message,
   onSignout,
-  name = 'Алексей',
-  email = 'nikulin.aleksey.aleksandrovich@gmail.com',
+  messageSetter,
+  isPreloaderVisible,
+  handleUpdateProfile,
 }) {
-  const { values, handleChange } = useFormWithValidation();
+  const user = useContext(CurrentUserContext);
+  const { name, email } = user;
+ 
   const [isEditButtonClicked, setIsEditButtonClicked] = useState(false);
-
-  function handleEdit(e) {
-    e.preventDefault();
-
-    setIsEditButtonClicked(!isEditButtonClicked);
-  }
+  const [isSubmitButtonActive, setIsSubmitButtonActive] = useState(true);
+  const { values, handleChange, errors, isValid } = useFormWithValidation(email , name);
   
+  function onUpdateUser(e) {
+    e.preventDefault();
+    
+    handleUpdateProfile(values.name || name, values.email || email)
+    
+    setIsEditButtonClicked(false);
+  }
+ 
+  function showEditChildren() {
+    return <>
+      <label className="profile__label">
+        Имя
+        <input
+          type='text'
+          name='name'
+          minLength='2'
+          maxLength='30'
+          value={values.name}
+          onChange={handleChange}
+          className={`profile__input ${errors.name ? 'profile__input_type_error' : ''}`}
+        />
+      </label>
+      <label className="profile__label">
+        E-mail
+        <input
+          type='email'
+          name='email'
+          minLength='5'
+          maxLength='80'
+          value={values.email}
+          onChange={handleChange}
+          className={`profile__input ${errors.email ? 'profile__input_type_error' : ''}`}
+        />
+      </label>
+      {isSubmitButtonActive ?
+        <button
+          type='submit'
+          className='profile__button profile__button_type_edit'
+        >
+          Сохранить
+        </button>
+        :
+        <button
+          disabled
+          className='profile__button profile__button_type_edit profile__button_type_disabled'
+        >
+          Сохранить
+        </button>
+      }
+    </>
+  }
+  function showDefaultChildren() {
+    return <>
+      <label className="profile__label">
+        Имя
+        <input
+          type='text'
+          name='name'
+          value={name}
+          minLength='2'
+          maxLength='30'
+          readOnly='readonly'
+          className="profile__input"
+        />
+      </label>
+      <label className="profile__label">
+        E-mail
+        <input
+          type='email'
+          name='email'
+          minLength='5'
+          maxLength='80'
+          value={email}
+          readOnly='readonly'
+          className="profile__input"
+        />
+      </label>
+      <span className='profile__message'>{message}</span>
+      <button
+        className="profile__button"
+        onClick={() => setIsEditButtonClicked(true)}
+      >
+        Редактировать
+      </button>
+      <button
+        type='button'
+        onClick={onSignout}
+        className="profile__button profile__button_type_sign-out"
+      >
+        Выйти из аккаунта
+      </button>
+    </>
+  }
+
+  useEffect(() => {
+    setIsSubmitButtonActive(isValid && (values.name !== '' || values.email!== '') && (values.name !== name || values.email !== email));
+  }, [values, isValid, name, email, isSubmitButtonActive])
+
+
+  useEffect(() => {
+    messageSetter('')
+  }, []);
   return (
     <section className="profile">
-      <div className="profile__container">
-        <h1 className="profile__title">
-          {`Привет, ${name}!`}
-        </h1>
-        <form className="profile__form" onSubmit={handleEdit}>
-          <label className="profile__label">
-            Имя
-            {isEditButtonClicked ? 
-              <input
-                type='text'
-                name='name'
-                value={values.name || name}
-                className="profile__input"
-                onChange={handleChange}
-              />
-              :
-              <input
-                readOnly='readonly'
-                type='text'
-                name='name'
-                value={values.name || name}
-                className="profile__input"
-                onChange={handleChange}
-              />
-            }
-            
-          </label>
-          <label className="profile__label">
-            E-mail
-            {isEditButtonClicked ?
-              <input
-                type='email'
-                name='email'
-                value={values.email || email}
-                className="profile__input"
-                onChange={handleChange}
-              />
-              :
-              <input
-                readOnly='readonly'
-                type='email'
-                name='email'
-                value={values.email || email}
-                className="profile__input"
-                onChange={handleChange}
-              />
-            }
-          </label>
-
-          <button className="profile__button" type='submit' >
-            {isEditButtonClicked ? 'Сохранить' : 'Редактировать'}
-          </button>
-          <button type='button' className="profile__button profile__button_type_sign-out" onClick={onSignout}>Выйти из аккаунта</button>
-        </form>
-      </div>
+      <Preloader isPreloaderVisible={isPreloaderVisible} />
+      {!isPreloaderVisible &&
+        <div className="profile__container">
+          <h1 className="profile__title">
+            {`Привет, ${name}!`}
+          </h1>
+          <form
+            noValidate
+            onSubmit={onUpdateUser}
+            className="profile__form"
+          >
+            {isEditButtonClicked ? showEditChildren() : showDefaultChildren()}
+          </form>
+        </div>
+      }
     </section>
   );
 }

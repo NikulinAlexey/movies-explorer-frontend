@@ -1,17 +1,23 @@
 import AuthForm from '../AuthForm/AuthForm';
 
-function Register() {
+function Register({
+  message,
+  onSubmit,
+  messageSetter,
+  isPreloaderVisible,
+}) {
   return (
-    <section>
-      <AuthForm
-        linkText='Войти'
-        linkPath='/sign-in'
-        title='Добро пожаловать!'
-        errorText='Ошибка регистрации'
-        submitText='Зарегистрироваться'
-        paragraphText='Уже зарегистрированы?'
-      />
-    </section>
+    <AuthForm
+      linkText='Войти'
+      message={message}
+      linkPath='/sign-up'
+      onSubmit={onSubmit}
+      title='Добро пожаловать!'
+      messageSetter={messageSetter}
+      submitText='Зарегистрироваться'
+      paragraphText='Уже зарегистрированы?'
+      isPreloaderVisible={isPreloaderVisible}
+    />
   );
 }
 
